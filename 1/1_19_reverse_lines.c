@@ -11,11 +11,6 @@ void copy(char to[], char from[]);
 
 void print_reverse(char line[], int len);
 
-/*
- * WARNING: I am not completely sure the exercise is correct, because it saying
- * that I have to remove traling spaces and tabs, but I consider both in the
- * algo to skip them... so, maybe it's wrong
- */
 int main(void) {
 	int len;
 	char line[MAXLINE];
