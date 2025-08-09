@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+#define IN  1
+#define OUT 0
+
+#define CHARS 127
+
+int main(void) {
+	int c, i, j;
+	int cf[CHARS]; /* array of char frequencies */
+
+	/* Initialize the array of lengths */
+	for (i = 0; i < CHARS; i++)
+		cf[i] = 0;
+
+	while ((c = getchar()) != EOF)
+		cf[c]++;
+
+	for (i = 0; i < CHARS; i++) {
+		if (cf[i] == 0) continue;
+
+		if (i == '\t') printf("'\\t' => ");
+		else if (i == '\n') printf("'\\n' => ");
+		else printf("'%c'  => ", (char) i);
+
+		for (j = 0; j < cf[i]; j++)
+			printf("*");
+		printf("\n");
+	}
+
+	return 0;
+}
