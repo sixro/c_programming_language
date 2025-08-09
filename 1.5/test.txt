@@ -2,6 +2,6 @@ Hello, World!
 Hello	World!
 Hello      World!
 
-HelloCiao Back
 Hello				World
-Hello \ \ \ \ \ World
+Hello World
+Close
