@@ -2,6 +2,7 @@
 #define ASSERTIONS_H
 
 #include <stdlib.h>
+#include <string.h>
 
 #define assert_eq(a, b) \
 	if (a != b) { \
