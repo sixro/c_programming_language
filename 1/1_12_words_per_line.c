@@ -20,4 +20,6 @@ int main(void) {
 			printf("%c", c);
 		}
 	}
+
+	return 0;
 }
