@@ -1,6 +1,7 @@
 #ifndef ASSERTIONS_H
 #define ASSERTIONS_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
