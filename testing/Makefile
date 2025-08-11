@@ -6,6 +6,9 @@ ALL_C_FILES=$(wildcard *.c)
 SOURCE_FILES=$(filter-out test_%.c, $(ALL_C_FILES))
 OBJECT_FILES=$(SOURCE_FILES:.c=.o)
 TEST_FILES=$(wildcard test_*.c)
+ADDITIONAL_SOURCE_FILES = $(shell for file in $(SOURCE_FILES); do \
+	if ! grep -q 'int main' $$file; then echo $$file; fi; \
+done)
 
 # DEPS = hellomake.h
 # %.o: %.c# $(DEPS)
@@ -19,6 +22,21 @@ debug: $(OBJECT_FILES)
 app: $(OBJECT_FILES)
 	mkdir -p bin
 	$(CC) -o bin/$(EXEC) $^ $(CFLAGS) -O2
+
+run-tests:
+	@for file in $(TEST_FILES); do \
+		tests=$$(grep -o 'test_[a-zA-Z0-9_]*' $$file | sort -u); \
+		temp_calls="temp_calls_$$file"; \
+		printf "" > $$temp_calls; \
+		for test in $$tests; do \
+			printf "\t%s();\n" "$$test" >> $$temp_calls; \
+		done; \
+		sed -i '' -e '/\/\* Begin all tests \*\//,/\/\* End all tests \*\//{//!d;}' $$file; \
+		sed -i '' -e '/\/\* Begin all tests \*\//r '"$$temp_calls" $$file; \
+		$(CC) $(CFLAGS) -o test_runner $$file $(ADDITIONAL_SOURCE_FILES); \
+		if [ -f test_runner ]; then ./test_runner; fi; \
+		rm -f test_runner $$temp_calls; \
+	done
 
 .PHONY: clean
 
