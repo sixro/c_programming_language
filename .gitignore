@@ -1,3 +1,8 @@
 *.out
+*.o
+
+.tags
+tags
+TAGS
 
 1_19_reverse_lines

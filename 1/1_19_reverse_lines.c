@@ -11,6 +11,12 @@ void copy(char to[], char from[]);
 
 void print_reverse(char line[], int len);
 
+/*
+ * This is the main function.
+ *
+ * TODO capire come fare qui
+ * FIXME blahblahblah
+ */
 int main(void) {
 	int len;
 	char line[MAXLINE];
