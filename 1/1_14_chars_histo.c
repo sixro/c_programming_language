@@ -1,8 +1,5 @@
 #include <stdio.h>
 
-#define IN  1
-#define OUT 0
-
 #define CHARS 127
 
 int main(void) {

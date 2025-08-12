@@ -7,6 +7,8 @@
 #define PNAME_MAX_LEN   10
 #define PVAL_MAX_LEN   200
 
+#define TRUE 1
+
 #define OUT       0
 #define IN_CMD    2
 #define IN_PARAMS 3

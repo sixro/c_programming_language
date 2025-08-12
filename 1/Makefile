@@ -1,5 +1,5 @@
 CC = gcc-15
-CFLAGS=-g -O0 -Wall -Werror -std=c89 -pedantic
+CFLAGS=-g -O0 -Wall -Werror -Wunused-macros -std=c89 -pedantic
 
 SOURCE_FILES=$(wildcard *.c)
 OBJECT_FILES=$(SOURCE_FILES:.c=.o)

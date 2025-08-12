@@ -1,5 +1,5 @@
 CC=gcc-15
-CFLAGS=-Wall -Werror -std=c89 -pedantic
+CFLAGS=-Wall -Werror -Wunused-macros -std=c89 -pedantic
 EXEC=myapp
 
 ALL_C_FILES=$(wildcard *.c)
