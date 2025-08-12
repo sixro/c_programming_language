@@ -29,32 +29,34 @@ int contains(const char s[], char c) {
 	return found;
 }
 
-void squeeze(char s[], char chars[]) {
-	int i, j;
+int any(char s[], char chars[]) {
+	int i;
 
-	for (i = j = 0; s[i] != '\0'; i++) {
-		if (! contains(chars, s[i]))
-			s[j++] = s[i];
+	for (i = 0; s[i] != '\0'; i++) {
+		if (contains(chars, s[i]))
+			return i;
 	}
-	s[j] = '\0';
+
+	return -1;
 }
 
 int main (void) {
 	int i = 0;
 	char text[MAXLINE];
-	char to_squeeze[MAXLINE];
+	char chars[MAXLINE];
+	int pos;
 
 	for (i = 0; i < MAXLINE; i++)
 		text[i] = '\0';
 	for (i = 0; i < MAXLINE; i++)
-		to_squeeze[i] = '\0';
+		chars[i] = '\0';
 
 	i_getline(text, MAXLINE);
-	i_getline(to_squeeze, MAXLINE);
+	i_getline(chars, MAXLINE);
 
 	printf("Text ............: \"%s\"\n", text);
-	printf("To squeeze ......: \"%s\"\n", to_squeeze);
+	printf("Chars ...........: \"%s\"\n", chars);
 
-	squeeze(text, to_squeeze);
-	printf("Squeezed ........: \"%s\"\n", text);
+	pos = any(text, chars);
+	printf("Position ........: %d\n", pos);
 }
