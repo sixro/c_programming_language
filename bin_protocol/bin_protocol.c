@@ -20,7 +20,7 @@ typedef struct {
 
 void init(char s[], int len) {
 	int i;
-	for (int i = 0; i < len; i++)
+	for (i = 0; i < len; i++)
 		s[i] = '\0';
 }
 
