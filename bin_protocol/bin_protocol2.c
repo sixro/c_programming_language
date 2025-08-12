@@ -4,19 +4,17 @@
 
 #define COUNT_MAX_LEN    3
 #define CMD_MAX_LEN     10
-#define PARAMS_MAX_LEN 200
-
-#define TRUE  1
-#define FALSE 0
+#define PNAME_MAX_LEN   10
+#define PVAL_MAX_LEN   200
 
 #define OUT       0
 #define IN_CMD    2
 #define IN_PARAMS 3
 
 typedef struct {
-	char command[CMD_MAX_LEN];
-	char params[PARAMS_MAX_LEN];
-} Command;
+	char name[PNAME_MAX_LEN];
+	char value[PVAL_MAX_LEN];
+} Param;
 
 void init(char s[], int len) {
 	int i;
@@ -24,11 +22,27 @@ void init(char s[], int len) {
 		s[i] = '\0';
 }
 
+void get_command(char line[]) {
+	int c, i;
+
+	init(line, CMD_MAX_LEN);
+	i = 0;
+
+	while ((c = getchar()) != EOF) {
+		if (c == '\n') {
+			if (i > 0)
+				line[i] = '\0';
+			break;
+		}
+		line[i++] = c;
+	}
+}
+
 int get_count() {
 	int c, i;
 	char line[COUNT_MAX_LEN];
 
-	init(line, CMD_MAX_LEN);
+	init(line, COUNT_MAX_LEN);
 	i = 0;
 
 	while ((c = getchar()) != EOF) {
@@ -42,31 +56,31 @@ int get_count() {
 	return -1;
 }
 
-void get_command(Command *cmd) {
+void get_param(Param *p) {
 	int c, i;
-	char command[CMD_MAX_LEN];
-	char params[PARAMS_MAX_LEN];
+	char name[PNAME_MAX_LEN];
+	char value[PVAL_MAX_LEN];
 	int state;
 	
-	init(command, CMD_MAX_LEN);
-	init(params, PARAMS_MAX_LEN);
+	init(name, PNAME_MAX_LEN);
+	init(value, PVAL_MAX_LEN);
 
 	state = OUT;
 	i = 0;
 	while ((c = getchar()) != EOF) {
 		if (c == '\n') {
 			if (state == IN_CMD)
-				command[i] = '\0';
+				name[i] = '\0';
 			if (state == IN_PARAMS)
-				params[i] = '\0';
+				value[i] = '\0';
 
-			strcpy(cmd->command, command);
-			strcpy(cmd->params, params);
+			strcpy(p->name, name);
+			strcpy(p->value, value);
 			break;
 		}
 		else if (c == ' ' && state == IN_CMD) {
 			state = IN_PARAMS;
-			command[i] = '\0';
+			name[i] = '\0';
 			i = 0;
 		}
 		else {
@@ -74,11 +88,11 @@ void get_command(Command *cmd) {
 				state = IN_CMD;
 			if (state == IN_CMD) {
 				/* printf("*** adding char %c to cmd\n", c); */
-				command[i++] = c;
+				name[i++] = c;
 			}
 			if (state == IN_PARAMS) {
 				/* printf("*** adding char %c to params\n", c); */
-				params[i++] = c;
+				value[i++] = c;
 			}
 		}
 	}
@@ -87,22 +101,27 @@ void get_command(Command *cmd) {
 int main(void) {
 	int i;
 	int count;
-	Command commands[10];
+	char cmd[CMD_MAX_LEN];
+	Param params[10];
 
 	count = -1;
 	i = 0;
 
 	while (1 == 1) {
+		get_command(cmd);
+		printf("*** cmd: %s\n", cmd);
+
 		count = get_count();
-		if (count < 0) break; /* interrupt the program */
+		printf("*** count: %d\n", count);
 		if (count == 0) continue; /* new attempt to get a count */
 
 		for (i = 0; i < count; i++)
-			get_command(& commands[i]);
+			get_param(& params[i]);
 
+		printf("*** Executing command \"%s\"\n", cmd);
 		for (i = 0; i < count; i++) {
-			printf("*** Executing command \"%s\" with params \"%s\"\n", commands[i].command, commands[i].params);
-			if (strcmp(commands[i].command, "PING") == 0)
+			printf("*** ... with param \"%s\" valued to \"%s\"\n", params[i].name, params[i].value);
+			if (strcmp(cmd, "PING") == 0)
 				printf("*** PONG\n");
 		}
 	}
